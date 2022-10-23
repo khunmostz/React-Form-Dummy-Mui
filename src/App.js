@@ -1,6 +1,6 @@
 import logo from "./logo.svg";
 import "./App.css";
-import Layout from "./component/Layout";
+import SignIn from "./component/SignIn";
 import { Box } from "@mui/material";
 
 function App() {
@@ -13,7 +13,7 @@ function App() {
         height: "100vh",
       }}
     >
-      <Layout name="dasdas" />
+      <SignIn name="dasdas" />
     </Box>
   );
 }

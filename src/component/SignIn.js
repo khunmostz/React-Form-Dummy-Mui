@@ -3,9 +3,22 @@ import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { Drawer, Typography } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { auth, logInWithEmailAndPassword, signInWithGoogle } from "../firebase";
+import { useAuthState } from "react-firebase-hooks/auth";
+
 export default function SignIn({ name }) {
-  const [drawer, setDrawer] = React.useState(false);
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const [user, loading, error] = useAuthState(auth);
+  const navigate = useNavigate();
+  React.useEffect(() => {
+    if (loading) {
+      // maybe trigger a loading screen
+      return;
+    }
+    if (user) navigate("/user");
+  }, [user, loading]);
   return (
     <Box
       sx={{
@@ -28,34 +41,26 @@ export default function SignIn({ name }) {
         id="email"
         label="Email"
         variant="outlined"
+        onChange={(e) => setEmail(e.target.value)}
+        value={email}
         sx={{ width: "100%", marginBottom: "20px" }}
       />
       <TextField
         id="password"
         label="Password"
         variant="outlined"
+        onChange={(e) => setPassword(e.target.value)}
+        value={password}
         sx={{ width: "100%", marginBottom: "40px" }}
       />
-      <Link style={{ width: "100%" }} to="/user">
-        <Button variant="outlined" sx={{ width: "100%" }}>
-          Sign In
-        </Button>
-      </Link>
+
       <Button
         variant="outlined"
         sx={{ width: "100%" }}
-        onClick={() => setDrawer(true)}
+        onClick={() => logInWithEmailAndPassword(email, password)}
       >
-        Drawer
+        Sign In
       </Button>
-      <Drawer
-        open={drawer}
-        onClose={() => {
-          setDrawer(false);
-        }}
-      >
-        <Typography> Is Drawer</Typography>
-      </Drawer>
     </Box>
   );
 }
