@@ -2,8 +2,10 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
+import { Drawer, Typography } from "@mui/material";
+import { Link } from "react-router-dom";
 export default function SignIn({ name }) {
+  const [drawer, setDrawer] = React.useState(false);
   return (
     <Box
       sx={{
@@ -34,9 +36,26 @@ export default function SignIn({ name }) {
         variant="outlined"
         sx={{ width: "100%", marginBottom: "40px" }}
       />
-      <Button variant="outlined" sx={{ width: "100%" }}>
-        Sign In
+      <Link style={{ width: "100%" }} to="/user">
+        <Button variant="outlined" sx={{ width: "100%" }}>
+          Sign In
+        </Button>
+      </Link>
+      <Button
+        variant="outlined"
+        sx={{ width: "100%" }}
+        onClick={() => setDrawer(true)}
+      >
+        Drawer
       </Button>
+      <Drawer
+        open={drawer}
+        onClose={() => {
+          setDrawer(false);
+        }}
+      >
+        <Typography> Is Drawer</Typography>
+      </Drawer>
     </Box>
   );
 }
