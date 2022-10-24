@@ -34,8 +34,8 @@ export default function SignIn({ name }) {
         boxShadow: 3,
       }}
     >
-      <Typography variant="h3" sx={{ marginBottom: "30px" }}>
-        Sign In
+      <Typography variant="h4" sx={{ marginBottom: "30px" }}>
+        SignIn Adventures <br></br>
       </Typography>
       <TextField
         id="email"
@@ -62,7 +62,7 @@ export default function SignIn({ name }) {
       >
         Sign In
       </Button>
-      <ToastContainer />;
+      <ToastContainer />
     </Box>
   );
 }

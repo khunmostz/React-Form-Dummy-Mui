@@ -21,6 +21,7 @@ import MailIcon from "@mui/icons-material/Mail";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import { Logout } from "@mui/icons-material";
 import { logout } from "../firebase";
+import { useLocation } from "react-router-dom";
 const drawerWidth = 240;
 
 const openedMixin = (theme) => ({
@@ -91,7 +92,7 @@ const Drawer = styled(MuiDrawer, {
 export default function MiniDrawer({ children }) {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
-
+  const location = useLocation();
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -141,7 +142,7 @@ export default function MiniDrawer({ children }) {
 
         <ListItem
           button
-          // className={router.pathname === "/dashboard" ? "Mui-selected" : ""}
+          className={location.pathname === "/user" ? "Mui-selected" : ""}
         >
           <ListItemIcon>
             <DashboardIcon />
