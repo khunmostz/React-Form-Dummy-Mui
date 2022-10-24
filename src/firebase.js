@@ -18,6 +18,7 @@ import {
   collection,
   where,
   addDoc,
+  setDoc,
 } from "firebase/firestore";
 
 import { ToastContainer, toast } from "react-toastify";
@@ -104,4 +105,5 @@ export {
   registerWithEmailAndPassword,
   sendPasswordReset,
   logout,
+  setDoc,
 };

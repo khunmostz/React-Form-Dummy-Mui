@@ -2,7 +2,7 @@ import * as React from "react";
 import Drawer from "../component/Drawer";
 import { DataGrid } from "@mui/x-data-grid";
 import { createFakeServer } from "@mui/x-data-grid-generator";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, db } from "../firebase";
 import {
@@ -13,8 +13,9 @@ import {
   query,
   collection,
   getDocs,
-  where,
-  arrayUnion,
+  doc,
+  deleteDoc,
+  getFirestore,
 } from "firebase/firestore";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -24,29 +25,17 @@ import { ToastContainer, toast } from "react-toastify";
 import { Box, Typography } from "@mui/material";
 
 export default function User() {
-  const [openDialog, setOpenDialog] = React.useState(false);
-  const [selectedProduct, setSelectedProduct] = React.useState();
   const [user, loading, error] = useAuthState(auth);
   const [name, setName] = React.useState([]);
   const [course, setCourse] = React.useState([]);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const notifySuccess = (message) => toast.success(message);
 
   const showUser = [];
   const showCourse = [];
-  const fakeUser = [
-    {
-      name: "user 1",
-      age: "21",
-      tel: "3123213",
-    },
-    {
-      name: "user 2",
-      age: "21",
-      tel: "3123213",
-    },
-  ];
+
   const fetchUser = async () => {
     setName([]);
     try {
@@ -56,8 +45,6 @@ export default function User() {
         showUser.push(result.data());
         setName((arr) => [...arr, result.data()]);
       });
-
-      console.log("in function: " + showUser);
     } catch (error) {
       console.log(error);
     }
@@ -69,15 +56,28 @@ export default function User() {
       const q = query(collection(db, "course-kbu"));
       const doc = await getDocs(q);
       doc.docs.forEach((result) => {
-        console.log(result.data());
         showCourse.push(result.data());
         setCourse((arr) => [...arr, result.data()]);
       });
-
-      console.log("in function: " + showCourse);
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const test = async (value) => {
+    const db = getFirestore();
+
+    const docRef = doc(db, "course-kbu", value);
+
+    deleteDoc(docRef)
+      .then(() => {
+        console.log("Entire Document has been deleted successfully.");
+        notifySuccess("Delete Successful!");
+        window.location.reload();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
   React.useEffect(() => {
     if (loading) return;
@@ -90,9 +90,6 @@ export default function User() {
     */ notifySuccess("Authentication Successful!");
     fetchUser();
     fetchCourse();
-
-    console.log(typeof showUser);
-    console.log("name : " + name);
   }, []);
   const CustomToolbar = ({ setFilterButtonEl }) => (
     <GridToolbarContainer>
@@ -115,6 +112,7 @@ export default function User() {
     { field: "courseId", headerName: "CoureseId", width: 70 },
     { field: "courseName", headerName: "CourseName", width: 160 },
     { field: "courseTeacher", headerName: "CourseTeacher", width: 160 },
+    { field: "courseDesc", headerName: "CourseDesc", width: 160 },
     { field: "courseCredit", headerName: "CourseCredit", width: 160 },
     {
       headerName: "ACTION",
@@ -129,8 +127,8 @@ export default function User() {
             aria-label="delete"
             size="large"
             onClick={() => {
-              setSelectedProduct(row);
-              setOpenDialog(true);
+              test(row.courseId);
+              //deleteCourse(row.courseId);
             }}
           >
             <DeleteIcon fontSize="inherit" />
@@ -166,6 +164,7 @@ export default function User() {
               courseId: item.courseId,
               courseName: item.courseName,
               courseTeacher: item.courseTeacher,
+              courseDesc: item.courseDesc,
               courseCredit: item.courseCredit,
             }))}
             columns={columnsCourse}
