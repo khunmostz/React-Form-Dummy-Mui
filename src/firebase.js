@@ -19,6 +19,9 @@ import {
   where,
   addDoc,
 } from "firebase/firestore";
+
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 // Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyDbRTLDjqn9dJay9LNyzCl1sKP58FEGSgg",
@@ -34,7 +37,8 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 const googleProvider = new GoogleAuthProvider();
-
+const notifyError = (message) => toast.error(message);
+const notifySuccess = (message) => toast.success(message);
 const signInWithGoogle = async () => {
   try {
     const res = await signInWithPopup(auth, googleProvider);
@@ -57,9 +61,11 @@ const signInWithGoogle = async () => {
 const logInWithEmailAndPassword = async (email, password) => {
   try {
     await signInWithEmailAndPassword(auth, email, password);
+    notifySuccess("Authentication Successful!");
   } catch (err) {
     console.error(err);
-    alert(err.message);
+    //alert(err.message);
+    notifyError(err.message);
   }
 };
 const registerWithEmailAndPassword = async (name, email, password) => {
