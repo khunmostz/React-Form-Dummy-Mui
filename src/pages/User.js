@@ -28,6 +28,7 @@ import { Box, Typography } from "@mui/material";
 import { OpenInBrowserOutlined } from "@mui/icons-material";
 import FormDialog from "../component/Dialog";
 import { Chart } from "../component/Chart";
+import EditForm from "../component/Edit";
 export default function User() {
   const [user, loading, error] = useAuthState(auth);
   const [name, setName] = React.useState([]);
@@ -36,6 +37,8 @@ export default function User() {
   const location = useLocation();
 
   const [refreshKey, setRefreshKey] = React.useState(0);
+
+  const [listUpdate, setListUpdate] = React.useState([]);
 
   const notifySuccess = (message) => toast.success(message);
 
@@ -84,27 +87,6 @@ export default function User() {
       });
   };
 
-  const updateCourse = async (
-    value,
-    CourseId,
-    CourseName,
-    CourseCredit,
-    CourseDesc,
-    CourseTeacher
-  ) => {
-    const db = getFirestore();
-
-    const docRef = doc(db, "course-kbu", value);
-
-    updateDoc(docRef, {
-      CourseId,
-      CourseName,
-      CourseCredit,
-      CourseDesc,
-      CourseTeacher,
-    });
-  };
-
   React.useEffect(() => {
     if (loading) return;
     if (!user) return navigate("/");
@@ -147,7 +129,15 @@ export default function User() {
       renderCell: ({ row }) => (
         <Stack direction="row">
           <IconButton aria-label="edit" size="large">
-            <EditIcon fontSize="inherit" />
+            <EditIcon
+              fontSize="inherit"
+              onClick={(e) => {
+                e.preventDefault();
+                handleEditOpen();
+                console.log(row.courseId);
+                setListUpdate(row);
+              }}
+            />
           </IconButton>
           <IconButton
             aria-label="delete"
@@ -155,7 +145,6 @@ export default function User() {
             onClick={(e) => {
               e.preventDefault();
               deleteCourse(row.courseId);
-              console.log(row.courseId);
             }}
           >
             <DeleteIcon fontSize="inherit" />
@@ -166,6 +155,7 @@ export default function User() {
   ];
 
   const [open, setOpen] = React.useState(false);
+  const [eopen, seteOpen] = React.useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -173,7 +163,12 @@ export default function User() {
 
   const handleClose = (value) => {
     setOpen(false);
-    //setSelectedValue(value);
+  };
+  const handleEditOpen = (courseId) => {
+    seteOpen(true);
+  };
+  const handleEditClose = (value) => {
+    seteOpen(false);
   };
 
   return (
@@ -186,15 +181,24 @@ export default function User() {
           sx={{ marginBottom: "20px" }}
           onClick={() => {
             handleClickOpen();
-            console.log("form user " + open);
           }}
         >
           Add Course
         </Button>
       </Box>
 
+      {/* Edit Form */}
+      <EditForm
+        handleEditOpen={eopen}
+        handleClose={handleEditClose}
+        value={listUpdate}
+      ></EditForm>
+
+      {/* Add Form */}
       <FormDialog handleOpen={open} handleClose={handleClose} />
+
       <Box sx={{ display: "flex" }}>
+        {/* User Table */}
         <Box style={{ height: 400, width: "50%" }}>
           <DataGrid
             components={{ Toolbar: CustomToolbar }}
@@ -210,7 +214,10 @@ export default function User() {
             checkboxSelection
           />
         </Box>
+
         <Box sx={{ width: "20px" }}></Box>
+
+        {/* Course Table */}
         <Box style={{ height: 400, width: "50%" }}>
           <DataGrid
             components={{ Toolbar: CustomToolbar }}

@@ -16,18 +16,16 @@ import { TextField } from "@mui/material";
 import {
   query,
   collection,
-  getDocs,
   addDoc,
+  doc,
   updateDoc,
   deleteDoc,
   getFirestore,
-  doc,
-  setDoc,
 } from "firebase/firestore";
 const emails = ["username@gmail.com", "user02@gmail.com"];
 
 function SimpleDialog(props) {
-  const { onClose, selectedValue, open } = props;
+  const { onClose, selectedValue, open, value } = props;
 
   const handleClose = () => {
     onClose(selectedValue);
@@ -37,13 +35,18 @@ function SimpleDialog(props) {
     onClose(value);
   };
 
-  const [courseId, setCourseId] = React.useState("");
-  const [courseName, setCourseName] = React.useState("");
-  const [courseTeacher, setCourseTeacher] = React.useState("");
-  const [courseCredit, setCourseCredit] = React.useState("");
-  const [courseDesc, setCourseDesc] = React.useState("");
+  var [courseId, setCourseId] = React.useState("");
+  var [courseName, setCourseName] = React.useState("");
+  var [courseTeacher, setCourseTeacher] = React.useState("");
+  var [courseCredit, setCourseCredit] = React.useState("");
+  var [courseDesc, setCourseDesc] = React.useState("");
 
-  const addCourse = async (
+  courseName = value.courseName;
+  courseTeacher = value.courseTeacher;
+  courseCredit = value.courseCredit;
+  courseDesc = value.courseDesc;
+
+  const updateCourse = async (
     courseId,
     courseName,
     courseCredit,
@@ -51,35 +54,44 @@ function SimpleDialog(props) {
     courseTeacher
   ) => {
     const db = getFirestore();
-    const q = query(collection(db, "course-kbu"));
-    const docRef = doc(q, courseId);
-    await setDoc(docRef, {
-      courseId,
-      courseName,
-      courseCredit,
-      courseDesc,
-      courseTeacher,
-    })
-      .then(() => {
-        window.location.reload();
-        console.log("add Success");
+
+    const docRef = doc(db, "course-kbu", courseId);
+
+    console.log(courseId, courseName, courseCredit, courseDesc, courseTeacher);
+
+    try {
+      updateDoc(docRef, {
+        courseId,
+        courseName,
+        courseCredit,
+        courseDesc,
+        courseTeacher,
       })
-      .catch((error) => {
-        console.log(error);
-      });
+        .then(() => {
+          console.log("success");
+          window.location.reload();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } catch (error) {}
   };
 
   return (
-    <Dialog onClose={handleClose} open={open} sx={{ width: "100%" }}>
-      <DialogTitle>เพิ่มหลักสูตรการเรียน</DialogTitle>
+    <Dialog onClose={handleClose} open={open}>
+      <DialogTitle>แก้ไขหลักสูตร</DialogTitle>
       <List sx={{ pt: 0 }}>
         <ListItem>
           <TextField
             required
             id="outlined-required"
             label="รหัสรายวิชา"
-            value={courseId}
-            onChange={(e) => setCourseId(e.target.value)}
+            //value={courseId}
+            defaultValue={value.courseId}
+            onChange={(e) => {
+              value.courseId = e.target.value;
+              console.log(value.courseId);
+            }}
           />
         </ListItem>
         <ListItem>
@@ -87,8 +99,9 @@ function SimpleDialog(props) {
             required
             id="outlined-required"
             label="ชื่อรายวิชา"
-            value={courseName}
-            onChange={(e) => setCourseName(e.target.value)}
+            //value={courseId}
+            defaultValue={value.courseName}
+            onChange={(e) => (value.courseName = e.target.value)}
           />
         </ListItem>
         <ListItem>
@@ -96,8 +109,9 @@ function SimpleDialog(props) {
             required
             id="outlined-required"
             label="ชื่อผู้สอน"
-            value={courseTeacher}
-            onChange={(e) => setCourseTeacher(e.target.value)}
+            //value={courseId}
+            defaultValue={value.courseTeacher}
+            onChange={(e) => (value.courseTeacher = e.target.value)}
           />
         </ListItem>
         <ListItem>
@@ -105,8 +119,9 @@ function SimpleDialog(props) {
             required
             id="outlined-required"
             label="หน่่วยกิต"
-            value={courseCredit}
-            onChange={(e) => setCourseCredit(e.target.value)}
+            //value={courseId}
+            defaultValue={value.courseCredit}
+            onChange={(e) => (value.courseCredit = e.target.value)}
           />
         </ListItem>
         <ListItem>
@@ -117,7 +132,8 @@ function SimpleDialog(props) {
             label="รายละเอียด"
             multiline
             rows={4}
-            value={courseDesc}
+            //value={courseId}
+            defaultValue={value.courseDesc}
             onChange={(e) => setCourseDesc(e.target.value)}
           />
         </ListItem>
@@ -126,16 +142,17 @@ function SimpleDialog(props) {
             variant="contained"
             sx={{ width: "100%" }}
             onClick={() => {
-              addCourse(
-                courseId,
-                courseName,
-                courseTeacher,
-                courseCredit,
-                courseDesc
+              console.log("accepth");
+              updateCourse(
+                value.courseId,
+                value.courseName,
+                value.courseTeacher,
+                value.courseCredit,
+                value.courseDesc
               );
             }}
           >
-            เพิ่มหลักสูตร
+            ยืนยันการแก้ไข
           </Button>
         </ListItem>
         <ListItem>
@@ -158,15 +175,16 @@ SimpleDialog.propTypes = {
   selectedValue: PropTypes.string.isRequired,
 };
 
-export default function FormDialog({ handleOpen, handleClose }) {
+export default function EditForm({ handleEditOpen, handleClose, value }) {
   const [selectedValue, setSelectedValue] = React.useState(emails[1]);
-
+  //console.log(value);
   return (
     <div>
       <SimpleDialog
         //selectedValue={selectedValue}
-        open={handleOpen}
+        open={handleEditOpen}
         onClose={handleClose}
+        value={value}
       />
     </div>
   );
