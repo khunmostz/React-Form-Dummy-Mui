@@ -50,15 +50,17 @@ function SimpleDialog(props) {
     courseDesc,
     courseTeacher
   ) => {
+    console.log(courseTeacher);
+
     const db = getFirestore();
     const q = query(collection(db, "course-kbu"));
     const docRef = doc(q, courseId);
     await setDoc(docRef, {
-      courseId,
-      courseName,
-      courseCredit,
-      courseDesc,
-      courseTeacher,
+      courseId: courseId,
+      courseName: courseName,
+      courseTeacher: courseTeacher,
+      courseCredit: courseCredit,
+      courseDesc: courseDesc,
     })
       .then(() => {
         window.location.reload();
@@ -79,7 +81,10 @@ function SimpleDialog(props) {
             id="outlined-required"
             label="รหัสรายวิชา"
             value={courseId}
-            onChange={(e) => setCourseId(e.target.value)}
+            onChange={(e) => {
+              setCourseId(e.target.value);
+              console.log(courseId);
+            }}
           />
         </ListItem>
         <ListItem>
@@ -88,7 +93,10 @@ function SimpleDialog(props) {
             id="outlined-required"
             label="ชื่อรายวิชา"
             value={courseName}
-            onChange={(e) => setCourseName(e.target.value)}
+            onChange={(e) => {
+              setCourseName(e.target.value);
+              console.log(courseName);
+            }}
           />
         </ListItem>
         <ListItem>
@@ -97,7 +105,10 @@ function SimpleDialog(props) {
             id="outlined-required"
             label="ชื่อผู้สอน"
             value={courseTeacher}
-            onChange={(e) => setCourseTeacher(e.target.value)}
+            onChange={(e) => {
+              setCourseTeacher(e.target.value);
+              console.log(courseTeacher);
+            }}
           />
         </ListItem>
         <ListItem>
@@ -106,7 +117,10 @@ function SimpleDialog(props) {
             id="outlined-required"
             label="หน่่วยกิต"
             value={courseCredit}
-            onChange={(e) => setCourseCredit(e.target.value)}
+            onChange={(e) => {
+              setCourseCredit(e.target.value);
+              console.log(courseCredit);
+            }}
           />
         </ListItem>
         <ListItem>
@@ -118,7 +132,10 @@ function SimpleDialog(props) {
             multiline
             rows={4}
             value={courseDesc}
-            onChange={(e) => setCourseDesc(e.target.value)}
+            onChange={(e) => {
+              setCourseDesc(e.target.value);
+              console.log(courseDesc);
+            }}
           />
         </ListItem>
         <ListItem>
@@ -129,9 +146,10 @@ function SimpleDialog(props) {
               addCourse(
                 courseId,
                 courseName,
-                courseTeacher,
+
                 courseCredit,
-                courseDesc
+                courseDesc,
+                courseTeacher
               );
             }}
           >
