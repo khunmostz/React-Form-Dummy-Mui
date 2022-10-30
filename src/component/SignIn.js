@@ -7,6 +7,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { auth, logInWithEmailAndPassword, signInWithGoogle } from "../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { ToastContainer, toast } from "react-toastify";
+
 export default function SignIn({ name }) {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");

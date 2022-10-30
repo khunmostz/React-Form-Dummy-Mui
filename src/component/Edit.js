@@ -1,27 +1,17 @@
 import * as React from "react";
 import PropTypes from "prop-types";
 import Button from "@mui/material/Button";
-import Avatar from "@mui/material/Avatar";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
-import ListItemAvatar from "@mui/material/ListItemAvatar";
-import ListItemText from "@mui/material/ListItemText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Dialog from "@mui/material/Dialog";
-import PersonIcon from "@mui/icons-material/Person";
-import AddIcon from "@mui/icons-material/Add";
-import Typography from "@mui/material/Typography";
-import { blue } from "@mui/material/colors";
 import { TextField } from "@mui/material";
 import {
-  query,
-  collection,
-  addDoc,
   doc,
   updateDoc,
-  deleteDoc,
   getFirestore,
 } from "firebase/firestore";
+
 const emails = ["username@gmail.com", "user02@gmail.com"];
 
 function SimpleDialog(props) {
@@ -50,22 +40,22 @@ function SimpleDialog(props) {
     courseId,
     courseName,
     courseCredit,
+    courseTeacher,
     courseDesc,
-    courseTeacher
+
   ) => {
     const db = getFirestore();
 
     const docRef = doc(db, "course-kbu", courseId);
 
     console.log(courseId, courseName, courseCredit, courseDesc, courseTeacher);
-
     try {
       updateDoc(docRef, {
-        courseId,
-        courseName,
-        courseCredit,
-        courseDesc,
-        courseTeacher,
+        courseId: courseId,
+        courseName: courseName,
+        courseTeacher: courseTeacher,
+        courseCredit: courseCredit,
+        courseDesc: courseDesc,
       })
         .then(() => {
           console.log("success");
@@ -74,9 +64,9 @@ function SimpleDialog(props) {
         .catch((error) => {
           console.log(error);
         });
-    } catch (error) {}
-  };
+    } catch (error) { }
 
+  };
   return (
     <Dialog onClose={handleClose} open={open}>
       <DialogTitle>แก้ไขหลักสูตร</DialogTitle>
@@ -92,6 +82,9 @@ function SimpleDialog(props) {
               value.courseId = e.target.value;
               console.log(value.courseId);
             }}
+            sx={{
+              width: 500,
+            }} disabled
           />
         </ListItem>
         <ListItem>
@@ -102,6 +95,9 @@ function SimpleDialog(props) {
             //value={courseId}
             defaultValue={value.courseName}
             onChange={(e) => (value.courseName = e.target.value)}
+            sx={{
+              width: '100%',
+            }}
           />
         </ListItem>
         <ListItem>
@@ -111,22 +107,35 @@ function SimpleDialog(props) {
             label="ชื่อผู้สอน"
             //value={courseId}
             defaultValue={value.courseTeacher}
-            onChange={(e) => (value.courseTeacher = e.target.value)}
+            onChange={(e) => {
+              (value.courseTeacher = e.target.value)
+              console.log(value.courseTeacher)
+            }}
+            sx={{
+              width: '100%',
+            }}
           />
         </ListItem>
         <ListItem>
           <TextField
             required
             id="outlined-required"
-            label="หน่่วยกิต"
+            label="หน่วยกิต"
             //value={courseId}
             defaultValue={value.courseCredit}
             onChange={(e) => (value.courseCredit = e.target.value)}
+            sx={{
+              width: '100%',
+            }}
           />
         </ListItem>
         <ListItem>
           <TextField
-            sx={{ width: "100%" }}
+            sx={{
+              width: "100%",
+              height: 100,
+              marginBottom: "10%",
+            }}
             required
             id="outlined-multiline-static"
             label="รายละเอียด"
@@ -134,7 +143,7 @@ function SimpleDialog(props) {
             rows={4}
             //value={courseId}
             defaultValue={value.courseDesc}
-            onChange={(e) => setCourseDesc(e.target.value)}
+            onChange={(e) => (value.courseDesc = e.target.value)}
           />
         </ListItem>
         <ListItem>
@@ -146,9 +155,9 @@ function SimpleDialog(props) {
               updateCourse(
                 value.courseId,
                 value.courseName,
-                value.courseTeacher,
                 value.courseCredit,
-                value.courseDesc
+                value.courseTeacher,
+                value.courseDesc,
               );
             }}
           >

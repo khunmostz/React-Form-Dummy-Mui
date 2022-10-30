@@ -1,7 +1,6 @@
 import * as React from "react";
 import Drawer from "../component/Drawer";
 import { DataGrid } from "@mui/x-data-grid";
-import { createFakeServer } from "@mui/x-data-grid-generator";
 import { Await, useLocation, useNavigate } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, db } from "../firebase";
@@ -13,9 +12,7 @@ import {
   query,
   collection,
   getDocs,
-  addDoc,
   doc,
-  updateDoc,
   deleteDoc,
   getFirestore,
 } from "firebase/firestore";
@@ -25,10 +22,10 @@ import { Stack, IconButton, Button } from "@mui/material";
 
 import { ToastContainer, toast } from "react-toastify";
 import { Box, Typography } from "@mui/material";
-import { OpenInBrowserOutlined } from "@mui/icons-material";
+
 import FormDialog from "../component/Dialog";
-import { Chart } from "../component/Chart";
 import EditForm from "../component/Edit";
+
 export default function User() {
   const [user, loading, error] = useAuthState(auth);
   const [name, setName] = React.useState([]);
@@ -93,9 +90,6 @@ export default function User() {
   }, [user, loading]);
 
   React.useEffect(() => {
-    /*
-    Query logic
-    */ notifySuccess("Authentication Successful!");
     fetchUser();
     fetchCourse();
   }, [refreshKey]);
@@ -117,11 +111,12 @@ export default function User() {
   ];
 
   const columnsCourse = [
-    { field: "courseId", headerName: "CoureseId", width: 70 },
-    { field: "courseName", headerName: "CourseName", width: 160 },
-    { field: "courseTeacher", headerName: "CourseTeacher", width: 160 },
-    { field: "courseDesc", headerName: "CourseDesc", width: 160 },
-    { field: "courseCredit", headerName: "CourseCredit", width: 160 },
+    { field: "courseId", headerName: "ID", width: 70 },
+    { field: "courseName", headerName: "Name", width: 160 },
+    { field: "courseTeacher", headerName: "Teacher", width: 160 },
+    { field: "courseCredit", headerName: "Credit", width: 160 },
+    { field: "courseDesc", headerName: "Description", width: 160 },
+   
     {
       headerName: "ACTION",
       field: ".",
@@ -173,7 +168,6 @@ export default function User() {
 
   return (
     <Drawer>
-      <Chart></Chart>
       <Box sx={{ display: "flex" }}>
         <Box sx={{ flexGrow: 1 }}></Box>
         <Button

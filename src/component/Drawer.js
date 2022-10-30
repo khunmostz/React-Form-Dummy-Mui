@@ -147,7 +147,7 @@ export default function MiniDrawer({ children }) {
           <ListItemIcon>
             <DashboardIcon />
           </ListItemIcon>
-          <ListItemText primary="Dashbaord" />
+          <ListItemText primary="Infomation" />
         </ListItem>
         <ListItem
           button

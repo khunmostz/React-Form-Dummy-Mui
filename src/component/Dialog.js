@@ -1,25 +1,14 @@
 import * as React from "react";
 import PropTypes from "prop-types";
 import Button from "@mui/material/Button";
-import Avatar from "@mui/material/Avatar";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
-import ListItemAvatar from "@mui/material/ListItemAvatar";
-import ListItemText from "@mui/material/ListItemText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Dialog from "@mui/material/Dialog";
-import PersonIcon from "@mui/icons-material/Person";
-import AddIcon from "@mui/icons-material/Add";
-import Typography from "@mui/material/Typography";
-import { blue } from "@mui/material/colors";
 import { TextField } from "@mui/material";
 import {
   query,
   collection,
-  getDocs,
-  addDoc,
-  updateDoc,
-  deleteDoc,
   getFirestore,
   doc,
   setDoc,
@@ -85,6 +74,9 @@ function SimpleDialog(props) {
               setCourseId(e.target.value);
               console.log(courseId);
             }}
+            sx={{
+              width:500,
+            }}
           />
         </ListItem>
         <ListItem>
@@ -96,6 +88,9 @@ function SimpleDialog(props) {
             onChange={(e) => {
               setCourseName(e.target.value);
               console.log(courseName);
+            }}
+            sx={{
+              width:'100%',
             }}
           />
         </ListItem>
@@ -109,6 +104,9 @@ function SimpleDialog(props) {
               setCourseTeacher(e.target.value);
               console.log(courseTeacher);
             }}
+            sx={{
+              width:'100%',
+            }}
           />
         </ListItem>
         <ListItem>
@@ -120,6 +118,9 @@ function SimpleDialog(props) {
             onChange={(e) => {
               setCourseCredit(e.target.value);
               console.log(courseCredit);
+            }}
+            sx={{
+              width:'100%',
             }}
           />
         </ListItem>
