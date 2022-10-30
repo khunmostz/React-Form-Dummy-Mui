@@ -19,12 +19,11 @@ import {
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Stack, IconButton, Button } from "@mui/material";
-
 import { ToastContainer, toast } from "react-toastify";
 import { Box, Typography } from "@mui/material";
-
 import FormDialog from "../component/Dialog";
 import EditForm from "../component/Edit";
+import { height } from "@mui/system";
 
 export default function User() {
   const [user, loading, error] = useAuthState(auth);
@@ -116,7 +115,7 @@ export default function User() {
     { field: "courseTeacher", headerName: "Teacher", width: 160 },
     { field: "courseCredit", headerName: "Credit", width: 160 },
     { field: "courseDesc", headerName: "Description", width: 160 },
-   
+
     {
       headerName: "ACTION",
       field: ".",
@@ -191,9 +190,14 @@ export default function User() {
       {/* Add Form */}
       <FormDialog handleOpen={open} handleClose={handleClose} />
 
-      <Box sx={{ display: "flex" }}>
+      <Box sx={{
+        display: "flex",
+        height:700,
+      }}>
+
         {/* User Table */}
-        <Box style={{ height: 400, width: "50%" }}>
+        <Box style={{ height: "90%", width: "50%" }}>
+          <h1>User</h1>
           <DataGrid
             components={{ Toolbar: CustomToolbar }}
             rows={name.map((item, index) => ({
@@ -208,11 +212,10 @@ export default function User() {
             checkboxSelection
           />
         </Box>
-
         <Box sx={{ width: "20px" }}></Box>
-
         {/* Course Table */}
-        <Box style={{ height: 400, width: "50%" }}>
+        <Box style={{ height: "90%", width: "50%" }}>
+          <h1>Course</h1>
           <DataGrid
             components={{ Toolbar: CustomToolbar }}
             rows={course.map((item, index) => ({
