@@ -49,6 +49,7 @@ export default function SignIn({ name }) {
       <TextField
         id="password"
         label="Password"
+        type="password"
         variant="outlined"
         onChange={(e) => setPassword(e.target.value)}
         value={password}
