@@ -25,18 +25,21 @@ function SimpleDialog(props) {
     onClose(value);
   };
 
+  var [npcId, setnpcId] = React.useState("");
   var [courseId, setCourseId] = React.useState("");
   var [courseName, setCourseName] = React.useState("");
   var [courseTeacher, setCourseTeacher] = React.useState("");
   var [courseCredit, setCourseCredit] = React.useState("");
   var [courseDesc, setCourseDesc] = React.useState("");
 
+  npcId = value.npcId;
   courseName = value.courseName;
   courseTeacher = value.courseTeacher;
   courseCredit = value.courseCredit;
   courseDesc = value.courseDesc;
 
   const updateCourse = async (
+    npcId,
     courseId,
     courseName,
     courseCredit,
@@ -46,7 +49,7 @@ function SimpleDialog(props) {
   ) => {
     const db = getFirestore();
 
-    const docRef = doc(db, "course-kbu", courseId);
+    const docRef = doc(db, "course-kbu", npcId);
 
     console.log(courseId, courseName, courseCredit, courseDesc, courseTeacher);
     try {
@@ -84,7 +87,7 @@ function SimpleDialog(props) {
             }}
             sx={{
               width: 500,
-            }} disabled
+            }} 
           />
         </ListItem>
         <ListItem>
@@ -153,6 +156,7 @@ function SimpleDialog(props) {
             onClick={() => {
               console.log("accepth");
               updateCourse(
+                value.npcId,
                 value.courseId,
                 value.courseName,
                 value.courseCredit,

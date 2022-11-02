@@ -13,13 +13,11 @@ import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
 import DashboardIcon from "@mui/icons-material/Dashboard";
-import { Logout } from "@mui/icons-material";
+import ShoppingBasketOutlinedIcon from '@mui/icons-material/ShoppingBasketOutlined';
+import { Login, Logout } from "@mui/icons-material";
 import { logout } from "../firebase";
 import { useLocation } from "react-router-dom";
 const drawerWidth = 240;
@@ -149,6 +147,17 @@ export default function MiniDrawer({ children }) {
           </ListItemIcon>
           <ListItemText primary="Infomation" />
         </ListItem>
+
+        <ListItem
+           button
+           className={location.pathname === "/plan" ? "Mui-selected" : ""}
+        >
+          <ListItemIcon>
+            <ShoppingBasketOutlinedIcon/>
+          </ListItemIcon>
+          <ListItemText primary="plan" />
+        </ListItem>
+
         <ListItem
           button
           onClick={() => {

@@ -27,12 +27,14 @@ function SimpleDialog(props) {
   };
 
   const [courseId, setCourseId] = React.useState("");
+  const [npcId, setNpcId] = React.useState("");
   const [courseName, setCourseName] = React.useState("");
   const [courseTeacher, setCourseTeacher] = React.useState("");
   const [courseCredit, setCourseCredit] = React.useState("");
   const [courseDesc, setCourseDesc] = React.useState("");
 
   const addCourse = async (
+    npcId,
     courseId,
     courseName,
     courseCredit,
@@ -43,8 +45,9 @@ function SimpleDialog(props) {
 
     const db = getFirestore();
     const q = query(collection(db, "course-kbu"));
-    const docRef = doc(q, courseId);
+    const docRef = doc(q, npcId);
     await setDoc(docRef, {
+      npcId: npcId,
       courseId: courseId,
       courseName: courseName,
       courseTeacher: courseTeacher,
@@ -64,6 +67,21 @@ function SimpleDialog(props) {
     <Dialog onClose={handleClose} open={open} sx={{ width: "100%" }}>
       <DialogTitle>เพิ่มหลักสูตรการเรียน</DialogTitle>
       <List sx={{ pt: 0 }}>
+      <ListItem>
+          <TextField
+            required
+            id="outlined-required"
+            label="npcId"
+            value={npcId}
+            onChange={(e) => {
+              setNpcId(e.target.value);
+              console.log(npcId);
+            }}
+            sx={{
+              width:500,
+            }}
+          />
+        </ListItem>
         <ListItem>
           <TextField
             required
@@ -145,9 +163,9 @@ function SimpleDialog(props) {
             sx={{ width: "100%" }}
             onClick={() => {
               addCourse(
+                npcId,
                 courseId,
                 courseName,
-
                 courseCredit,
                 courseDesc,
                 courseTeacher

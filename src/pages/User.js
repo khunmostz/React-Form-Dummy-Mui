@@ -23,7 +23,6 @@ import { ToastContainer, toast } from "react-toastify";
 import { Box, Typography } from "@mui/material";
 import FormDialog from "../component/Dialog";
 import EditForm from "../component/Edit";
-import { height } from "@mui/system";
 
 export default function User() {
   const [user, loading, error] = useAuthState(auth);
@@ -110,14 +109,15 @@ export default function User() {
   ];
 
   const columnsCourse = [
-    { field: "courseId", headerName: "ID", width: 70 },
+    { field: "npcId", headerName: "NPC", width: 100 },
+    { field: "courseId", headerName: "ID", width: 80 },
     { field: "courseName", headerName: "Name", width: 160 },
     { field: "courseTeacher", headerName: "Teacher", width: 160 },
-    { field: "courseCredit", headerName: "Credit", width: 160 },
+    { field: "courseCredit", headerName: "Credit", width: 80 },
     { field: "courseDesc", headerName: "Description", width: 160 },
 
     {
-      headerName: "ACTION",
+      headerName: "",
       field: ".",
       width: 120,
       renderCell: ({ row }) => (
@@ -138,7 +138,7 @@ export default function User() {
             size="large"
             onClick={(e) => {
               e.preventDefault();
-              deleteCourse(row.courseId);
+              deleteCourse(row.npcId);
             }}
           >
             <DeleteIcon fontSize="inherit" />
@@ -171,7 +171,8 @@ export default function User() {
         <Box sx={{ flexGrow: 1 }}></Box>
         <Button
           variant="outlined"
-          sx={{ marginBottom: "20px" }}
+          sx={{marginTop: "20px", 
+            marginBottom: "10px" }}
           onClick={() => {
             handleClickOpen();
           }}
@@ -192,11 +193,11 @@ export default function User() {
 
       <Box sx={{
         display: "flex",
-        height:700,
+        height:740.6  ,
       }}>
 
         {/* User Table */}
-        <Box style={{ height: "90%", width: "50%" }}>
+        <Box style={{ height: "90%", width: "40%" }}>
           <h1>User</h1>
           <DataGrid
             components={{ Toolbar: CustomToolbar }}
@@ -212,14 +213,16 @@ export default function User() {
             checkboxSelection
           />
         </Box>
+        
         <Box sx={{ width: "20px" }}></Box>
         {/* Course Table */}
-        <Box style={{ height: "90%", width: "50%" }}>
+        <Box style={{ height: "90%", width: "60%" }}>
           <h1>Course</h1>
           <DataGrid
             components={{ Toolbar: CustomToolbar }}
             rows={course.map((item, index) => ({
               id: index,
+              npcId: item.npcId,
               courseId: item.courseId,
               courseName: item.courseName,
               courseTeacher: item.courseTeacher,
