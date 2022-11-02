@@ -148,7 +148,7 @@ export default function MiniDrawer({ children }) {
           <ListItemText primary="Infomation" />
         </ListItem>
 
-        <ListItem
+        {/* <ListItem
            button
            className={location.pathname === "/plan" ? "Mui-selected" : ""}
         >
@@ -156,7 +156,7 @@ export default function MiniDrawer({ children }) {
             <ShoppingBasketOutlinedIcon/>
           </ListItemIcon>
           <ListItemText primary="plan" />
-        </ListItem>
+        </ListItem> */}
 
         <ListItem
           button

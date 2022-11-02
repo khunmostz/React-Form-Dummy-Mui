@@ -17,10 +17,10 @@ const router = createBrowserRouter([
     path: "/user",
     element: <User />,
   },
-  {
-    path: "/plan",
-    element: <Plan />,
-  },
+  // {
+  //   path: "/plan",
+  //   element: <Plan />,
+  // },
 ]);
 root.render(
   // <React.StrictMode>
